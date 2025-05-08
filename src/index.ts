@@ -59,3 +59,11 @@ function otimizarRota(pontos: PontoEntrega[]): { rota: (string | number)[], dist
 
     return { rota, distanciaTotal };
 }
+
+try {
+    const resultado = otimizarRota(pontos);
+    console.log("Rota otimizada:", resultado.rota);
+    console.log("Distância total:", resultado.distanciaTotal.toFixed(2));
+} catch (error) {
+    console.error("Erro ao otimizar a rota:", (error as Error).message);
+}
