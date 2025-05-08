@@ -5,4 +5,12 @@ interface PontoEntrega {
     x: number;
     y: number;
 }
+// Entrada de dados: lista de pontos de entrega
+const pontos: PontoEntrega[] = [
+    { id: 1, x: 0, y: 0 },
+    { id: 2, x: 10, y: 5 },
+    { id: 3, x: 5, y: 12 },
+    { id: 4, x: 8, y: 3 },
+    { id: 5, x: 2, y: 8 },
+];
 
