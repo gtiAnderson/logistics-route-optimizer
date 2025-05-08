@@ -6,7 +6,7 @@ interface PontoEntrega {
     y: number;
 }
 
-//função para validar se o ponto de entrega é válido
+//função extra para validar se o ponto de entrega é válido
 function validarPonto(ponto: any): ponto is PontoEntrega {
     return (
         ponto &&
@@ -21,13 +21,25 @@ function calcularDistancia(a: PontoEntrega, b: PontoEntrega): number {
     return Math.sqrt(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
 }
 
-//função para calcular a distância entre dois pontos de entrega
+// Algoritmo Nearest Neighbor com ponto inicial aleatório
 function otimizarRota(pontos: PontoEntrega[]): { rota: (string | number)[], distanciaTotal: number } {
-    if (pontos.length === 0) return { rota: [], distanciaTotal: 0};
+    if (!Array.isArray(pontos) || pontos.length === 0) {
+        throw new Error("A lista de pontos está vazia ou é inválida.");
+    }
+
+    for (const ponto of pontos) {
+        if (!validarPonto(ponto)) {
+            throw new Error(`Ponto inválido detectado: ${JSON.stringify(ponto)}`);
+        }
+    }
 
     const pontosVisitados = new Set<string | number>();
     const rota: (string | number)[] = [];
-    let pontoAtual = pontos[0];
+    
+    // Escolhe ponto inicial aleatório
+    const indiceInicial = Math.floor(Math.random() * pontos.length);
+    const pontoInicial = pontos[indiceInicial];
+    let pontoAtual = pontoInicial;
     let distanciaTotal = 0;
 
     rota.push(pontoAtual.id);
@@ -55,8 +67,9 @@ function otimizarRota(pontos: PontoEntrega[]): { rota: (string | number)[], dist
         }
     }
 
-    distanciaTotal += calcularDistancia(pontoAtual, pontos[0]);
-    rota.push(pontos[0].id); // Retorna ao ponto inicial
+    // Volta ao ponto inicial
+    distanciaTotal += calcularDistancia(pontoAtual, pontoInicial);
+    rota.push(pontoInicial.id);
 
     return { rota, distanciaTotal };
 }
@@ -72,7 +85,7 @@ const pontos: PontoEntrega[] = [
 
 try {
     const resultado = otimizarRota(pontos);
-    console.log("Rota otimizada:", resultado.rota);
+    console.log("Ordem da rota:", resultado.rota);
     console.log("Distância total:", resultado.distanciaTotal.toFixed(2));
 } catch (error) {
     console.error("Erro ao otimizar a rota:", (error as Error).message);
