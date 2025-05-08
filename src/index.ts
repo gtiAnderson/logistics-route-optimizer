@@ -1,18 +1,19 @@
 
-//Entrada de dados: lista de pontos de entrega
-const pontos: PontoEntrega[] = [
-    { id: 1, x: 0, y: 0 },
-    { id: 2, x: 10, y: 5 },
-    { id: 3, x: 5, y: 12 },
-    { id: 4, x: 8, y: 3 },
-    { id: 5, x: 2, y: 8 },
-];
-
 //Interface para o ponto de entrega
 interface PontoEntrega {
     id:string | number;
     x: number;
     y: number;
+}
+
+//função para validar se o ponto de entrega é válido
+function validarPonto(ponto: any): ponto is PontoEntrega {
+    return (
+        ponto &&
+        (typeof ponto.id === 'string' || typeof ponto.id === 'number') &&
+        typeof ponto.x === 'number' &&
+        typeof ponto.y === 'number'
+    );
 }
 
 //função da formula euclidiana
@@ -59,6 +60,15 @@ function otimizarRota(pontos: PontoEntrega[]): { rota: (string | number)[], dist
 
     return { rota, distanciaTotal };
 }
+
+//Entrada de dados: lista de pontos de entrega
+const pontos: PontoEntrega[] = [
+    { id: 1, x: 0, y: 0 },
+    { id: 2, x: 10, y: 5 },
+    { id: 3, x: 5, y: 12 },
+    { id: 4, x: 8, y: 3 },
+    { id: 5, x: 2, y: 8 },
+];
 
 try {
     const resultado = otimizarRota(pontos);
